@@ -21,7 +21,7 @@ A [video](https://www.youtube.com/watch?v=_J0oJYGi38E&t=13s&ab_channel=Nylux) wa
 
 - Download the lastest release of [MSL](https://github.com/DDDDDragon/ModShardLauncher).
 - Unzip it.
-- **Move the `ModShard.ddl` file to your Stoneshard folder.**
+- **Move the `ModShard.dll` file to your Stoneshard folder.**
 - (Optional) Rename the data.win file in the Stoneshard folder with an other name so you'll have a backup if something went wrong.
 
 ### Using MSL
