@@ -26,8 +26,8 @@ A [video](https://www.youtube.com/watch?v=_J0oJYGi38E&t=13s&ab_channel=Nylux) wa
 
 ### Using MSL
 
-- Download the lastest `.sml` file released of [Speedshard - Money&Dungeon](https://github.com/remyCases/SpeedshardMoneyDungeon/releases).
-- Move the `Speedshard_Money&Dungeon.sml` in the `MSL/Mods` folder.
+- Download the lastest `.sml` file released of [Speedshard - MoneyDungeon](https://github.com/remyCases/SpeedshardMoneyDungeon/releases).
+- Move the `Speedshard_MoneyDungeon.sml` in the `MSL/Mods` folder.
 - Run `ModShardLauncher.exe`.
 - Click on the anvil icon on the leftside.
 - Click on the folder icon on the topside. A dialog box should pop up.
