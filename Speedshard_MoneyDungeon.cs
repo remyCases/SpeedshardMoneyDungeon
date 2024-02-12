@@ -68,9 +68,9 @@ public class SpeedshardMoneyDungeon : Mod
     {
         Msl.LoadGML("gml_GlobalScript_scr_contract_finish")
             .MatchFrom("var prepaid\nvar money")
-            .ReplaceBy(ModFiles, "money_contract1")
+            .ReplaceBy(ModFiles, "money_contract1.gml")
             .MatchFromUntil("with (scr_guiCreateContainer", "}")
-            .ReplaceBy(ModFiles, "money_contract2")
+            .ReplaceBy(ModFiles, "money_contract2.gml")
             .Save();
     }
 }
