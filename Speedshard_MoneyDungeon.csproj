@@ -16,12 +16,6 @@
     <Reference Include="UndertaleModTool">
       <HintPath>..\..\UndertaleModTool.dll</HintPath>
     </Reference>
-    <Reference Include="Json">
-      <HintPath>..\..\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog">
-      <HintPath>..\..\Serilog.dll</HintPath>
-    </Reference>
   </ItemGroup>
   
 </Project>
