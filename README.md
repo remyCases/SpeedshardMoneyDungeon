@@ -10,8 +10,9 @@ This mod encapsulate the functionalities around money gains and dungeon generati
 - Room number, chest number and secret room chance are customizable for dungeon generation
 - Rare echant scrolls can now be found in distant dungeon boss chest
 - Gold multiplier for every npc
+- Fix the vanilla bug which prevent distant dungeons chests to generate a special reward 
 
-Other functionalities can be found in [Speedshard_Core](https://github.com/remyCases/SpeedshardCore), [Speedshard_Sprint](https://github.com/remyCases/SpeedshardSprint), [Speedshard_Backpack](https://github.com/remyCases/SpeedshardBackpack), Speedshard_Skinning and Speedshard_Stances *(to be soon released)*.
+Other functionalities can be found in [Speedshard_Core](https://github.com/remyCases/SpeedshardCore), [Speedshard_Sprint](https://github.com/remyCases/SpeedshardSprint), [Speedshard_Backpack](https://github.com/remyCases/SpeedshardBackpack), Speedshard_Skinning and Speedshard_Stances *(to be released soon)*.
 
 ## Installation
 
