@@ -12,7 +12,7 @@ This mod encapsulate the functionalities around money gains and dungeon generati
 - Gold multiplier for every npc
 - Fix the vanilla bug which prevent distant dungeons chests to generate a special reward 
 
-Other functionalities can be found in [Speedshard_Core](https://github.com/remyCases/SpeedshardCore), [Speedshard_Sprint](https://github.com/remyCases/SpeedshardSprint), [Speedshard_Backpack](https://github.com/remyCases/SpeedshardBackpack), Speedshard_Skinning and Speedshard_Stances *(to be released soon)*.
+Other functionalities can be found in [Speedshard_Core](https://github.com/remyCases/SpeedshardCore), [Speedshard_Sprint](https://github.com/remyCases/SpeedshardSprint), [Speedshard_Backpack](https://github.com/remyCases/SpeedshardBackpack), [Speedshard_Skinning](https://github.com/remyCases/SpeedshardSkinning) and [Speedshard_Stances](https://github.com/remyCases/SpeedshardStances).
 
 ## Installation
 
