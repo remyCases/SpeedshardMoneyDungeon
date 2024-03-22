@@ -17,5 +17,9 @@
       <HintPath>..\..\UndertaleModTool.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+<ItemGroup>
+  <PackageReference Include="System.Text.RegularExpressions"/>
+</ItemGroup>
   
 </Project>

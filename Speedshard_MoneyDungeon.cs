@@ -9,6 +9,8 @@ using UndertaleModLib.Models;
 using UndertaleModTool;
 using System.IO;
 using System.Data.Common;
+using System;
+using System.Text.RegularExpressions;
 
 namespace Speedshard_MoneyDungeon;
 public class SpeedshardMoneyDungeon : Mod
@@ -16,7 +18,7 @@ public class SpeedshardMoneyDungeon : Mod
     public override string Author => "zizani";
     public override string Name => "Speedshard - MoneyDungeon";
     public override string Description => "More gold, more rooms, more items, and more.";
-    public override string Version => "1.0.0.0";
+    public override string Version => "1.1.0.0";
     public override string TargetVersion => "0.8.2.10";
 
     public override void PatchMod()
@@ -80,11 +82,13 @@ public class SpeedshardMoneyDungeon : Mod
             .ReplaceBy(ModFiles, "money_contract2.gml")
             .Save();
     }
-    private IEnumerable<string> ChestRemoteIterator(IEnumerable<string> enumerable, string table)
+    private IEnumerable<string> ChestRemoteIterator(IEnumerable<string> enumerable)
     {
         string text = @ModFiles.GetCode("chest_remote.gml");
         string textModif = "";
+        string patternTable = @"\w+\(choose\(([0-9\s,]+)\)";
         bool matchFound = false;
+        bool tableFound = false;
         bool lootFound = false;
         bool untilFound = false;
         foreach (string element in enumerable)
@@ -93,14 +97,26 @@ public class SpeedshardMoneyDungeon : Mod
             {
                 matchFound = true;
                 yield return element;
-                yield return table; // insert table bellow
             }
-            else if (matchFound && !lootFound && element.Contains("with"))
+            else if (matchFound && !tableFound && element.Contains("scr_inventory_add_item"))
+            {
+                tableFound = true;
+                System.Text.RegularExpressions.Match m = Regex.Match(element, patternTable);
+                if(m.Success)
+                {
+                    yield return string.Format("var artifacts = [{0}]", m.Groups[1]); // insert table bellow
+                }
+                else
+                {
+                    throw new InvalidOperationException("Cannot find pattern table. Cannot patch it.");
+                }
+            }
+            else if (matchFound && tableFound && !lootFound && element.Contains("with"))
             {
                 lootFound = true;
                 textModif = string.Format(text, element);
             }
-            else if (matchFound && lootFound && !untilFound && element.Contains('}')) // last line to be replaced
+            else if (matchFound && tableFound && lootFound && !untilFound && element.Contains('}')) // last line to be replaced
             {
                 untilFound = true;
                 yield return textModif;
@@ -114,15 +130,15 @@ public class SpeedshardMoneyDungeon : Mod
     private void ArtifactFix()
     {
         Msl.LoadGML("gml_GlobalScript_scr_loot_chestRemoteBastion")
-            .Apply(x => ChestRemoteIterator(x, "var artifacts = [3243, 4570, 340, 579, 2609]"))
+            .Apply(x => ChestRemoteIterator(x))
             .Save();
         
         Msl.LoadGML("gml_GlobalScript_scr_loot_chestRemoteCrypt")
-            .Apply(x => ChestRemoteIterator(x, "var artifacts = [6365, 818, 1579, 104, 822, 2609]"))
+            .Apply(x => ChestRemoteIterator(x))
             .Save();
         
         Msl.LoadGML("gml_GlobalScript_scr_loot_chestRemoteCatacombs")
-            .Apply(x => ChestRemoteIterator(x, "var artifacts = [818, 104, 6365, 579, 2609]"))
+            .Apply(x => ChestRemoteIterator(x))
             .Save();
     }
 
@@ -191,17 +207,17 @@ public class SpeedshardMoneyDungeon : Mod
 
         Msl.LoadGML("gml_GlobalScript_scr_loot_chestRemoteCatacombs")
             .MatchFrom("if scr_chance_value(50)\nscr_inventory_add_item")
-            .ReplaceBy(ModFiles, "chest_remote_rare_enchant.gml")
+            .InsertBelow(ModFiles, "chest_remote_rare_enchant.gml")
             .Save();
 
         Msl.LoadGML("gml_GlobalScript_scr_loot_chestRemoteCrypt")
             .MatchFrom("if scr_chance_value(75)\nscr_inventory_add_item")
-            .ReplaceBy(ModFiles, "chest_remote_rare_enchant.gml")
+            .InsertBelow(ModFiles, "chest_remote_rare_enchant.gml")
             .Save();
 
         Msl.LoadGML("gml_GlobalScript_scr_loot_chestRemoteBastion")
             .MatchFrom("if scr_chance_value(75)\nscr_inventory_add_item")
-            .ReplaceBy(ModFiles, "chest_remote_rare_enchant.gml")
+            .InsertBelow(ModFiles, "chest_remote_rare_enchant.gml")
             .Save();
     }
 }

@@ -1,8 +1,5 @@
 # Speedshard - Money&Dungeon
 
-> [!CAUTION]
-> **This mod does not work with the current version of MSL (0.9)** 
-
 ## Description
 
 This mod encapsulate the functionalities around money gains and dungeon generation:

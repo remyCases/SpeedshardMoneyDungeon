@@ -1,4 +1,4 @@
-if scr_chance_value(75)
+if scr_chance_value(10)
 {
-    scr_inventory_add_item(choose(3050, 3086, o_inv_rare_scroll_enchant))
+    scr_inventory_add_item(o_inv_rare_scroll_enchant)
 }
