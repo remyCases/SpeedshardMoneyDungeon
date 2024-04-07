@@ -7,8 +7,6 @@ using ModShardLauncher.Mods;
 using System.Collections.Generic;
 using UndertaleModLib.Models;
 using UndertaleModTool;
-using System.IO;
-using System.Data.Common;
 using System;
 using System.Text.RegularExpressions;
 
@@ -18,7 +16,7 @@ public class SpeedshardMoneyDungeon : Mod
     public override string Author => "zizani";
     public override string Name => "Speedshard - MoneyDungeon";
     public override string Description => "More gold, more rooms, more items, and more.";
-    public override string Version => "1.1.0.0";
+    public override string Version => "1.2.0.0";
     public override string TargetVersion => "0.8.2.10";
 
     public override void PatchMod()
@@ -71,6 +69,13 @@ public class SpeedshardMoneyDungeon : Mod
     {
         Msl.LoadGML("gml_Object_o_dungeon_controller_Create_0")
             .Apply(DungeonIterator)
+            .Save();
+
+        Msl.LoadGML("gml_Object_o_dungeon_controller_Alarm_1")
+            .MatchFrom("var _endKnot = 0")
+            .InsertBelow("var _isSecret = 0")
+            .MatchFrom("var _isSecret = (isHasSecret && (_roomCount == (ROOMNUMBER - ROOMSECRET)))")
+            .ReplaceBy("_isSecret = (isHasSecret && (_roomCount == (ROOMNUMBER - ROOMSECRET)))")
             .Save();
     }
     private void MoreMoneyContract()
