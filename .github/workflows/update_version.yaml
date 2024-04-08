@@ -52,13 +52,13 @@ jobs:
 
     # Download msp
     - name: Download MSP
-      run: dotnet tool install --global ModShardPacker --version 1.1.0
+      run: dotnet tool install --global ModShardPacker --version 1.2.0
     
     # Run msp and add to release
     - name: Run MSP
       run: |
         mkdir -p ${{ github.workspace }}/output
-        msp -f ${{ github.workspace }} -o ${{ github.workspace }}/output --dll ${{ github.workspace }}/lib
+        msp -f ${{ github.workspace }} -o ${{ github.workspace }}/output --dll ${{ github.workspace }}/lib -n Speedshard_MoneyDungeon
 
     - uses: actions/upload-artifact@v3
       with:
@@ -68,6 +68,6 @@ jobs:
         path: ${{ github.workspace }}/output/*.sml
   
     - name: Create Release
-      run: gh release create ${{ github.ref_name }} ${{ github.workspace }}/output/*.sml ${{ github.workspace }}/speedshard_moneydungeon.ini
+      run: gh release create ${{ github.ref_name }} ${{ github.workspace }}/output/Speedshard_MoneyDungeon.sml ${{ github.workspace }}/speedshard_moneydungeon.ini
       env:
         GITHUB_TOKEN: ${{ github.TOKEN }}
