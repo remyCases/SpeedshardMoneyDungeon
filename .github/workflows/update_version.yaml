@@ -29,8 +29,12 @@ jobs:
 
       - name: Commit Files & Pull
         run: |
-          git commit -a -m "Updated version with CI."
-          git pull origin main --rebase
+          if [[ `git status --porcelain` ]]; then
+            git commit -a -m "Updated version with CI."
+          else
+            echo "WARNING: No changes were detected. git commit push action aborted."
+          fi   
+          git pull origin main --rebase   
 
       - name: Push Changes
         uses: ad-m/github-push-action@master
