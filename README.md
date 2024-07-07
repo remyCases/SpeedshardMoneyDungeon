@@ -27,6 +27,7 @@ A [video](https://www.youtube.com/watch?v=_J0oJYGi38E&t=13s&ab_channel=Nylux) wa
 ### Using MSL
 
 - Download the latest `.zip` of [Speedshard - MoneyDungeon](https://github.com/remyCases/SpeedshardMoneyDungeon/releases).
+- Unzip it, you should have one file.
 - Move the `Speedshard_MoneyDungeon.sml` in the `MSL/Mods` folder.
 - Run `ModShardLauncher.exe`.
 - Click on the anvil icon on the leftside.
