@@ -4,10 +4,7 @@
 
 using ModShardLauncher;
 using ModShardLauncher.Mods;
-using System.Collections.Generic;
 using UndertaleModLib.Models;
-using UndertaleModTool;
-using System;
 using System.Text.RegularExpressions;
 
 namespace Speedshard_MoneyDungeon;
@@ -21,20 +18,23 @@ public class SpeedshardMoneyDungeon : Mod
 
     public override void PatchMod()
     {
-        SpeedshardIni();
+        Msl.AddMenu("MoneyDungeon",
+            new UIComponent(name:"Dungeon reset days", associatedGlobal:"dungeon_reset_modifier", UIComponentType.Slider, (1, 6), 6, true),
+            new UIComponent(name:"Chance of secret room (%)", associatedGlobal:"secret_room_chance", UIComponentType.Slider, (0, 100), 5, true),
+            new UIComponent(name:"Money contract multiplier", associatedGlobal:"contract_money_modifier", UIComponentType.Slider, (1, 10), 1),
+            new UIComponent(name:"Max number of room", associatedGlobal:"number_room_max", UIComponentType.Slider, (5, 30), 15, true),
+            new UIComponent(name:"Min number of room", associatedGlobal:"number_room_min", UIComponentType.Slider, (1, 15), 5, true),
+            new UIComponent(name:"Max number of chest", associatedGlobal:"number_chest_max", UIComponentType.Slider, (1, 15), 7, true),
+            new UIComponent(name:"Min number of chest", associatedGlobal:"number_chest_min", UIComponentType.Slider, (1, 15), 5, true),
+            new UIComponent(name:"Merchant gold multiplier", associatedGlobal:"gold_multiplier", UIComponentType.Slider, (1, 10), 1)
+        );
+
         ResetTime();
         DungeonController();
         MoreMoneyContract();
         ArtifactFix();
         MoreGold();
         RareEnchant();
-    }
-    private void SpeedshardIni()
-    {
-        Msl.LoadGML("gml_GlobalScript_scr_sessionDataInit")
-            .MatchFrom("scr_sessionDataInit\n{")
-            .InsertBelow(ModFiles, "load_ini.gml")
-            .Save();
     }
     static private void ResetTime()
     {
@@ -146,7 +146,6 @@ public class SpeedshardMoneyDungeon : Mod
             .Apply(x => ChestRemoteIterator(x))
             .Save();
     }
-
     private void MoreGold()
     {
         Msl.LoadGML("gml_Object_o_village_standing_Alarm_1")
@@ -154,16 +153,14 @@ public class SpeedshardMoneyDungeon : Mod
             .InsertBelow(ModFiles, "more_gold.gml")
             .Save();
     }
-    
     private void RareEnchant()
     {
-        LocalizationItem localizationItem = new(
-            "rare_scroll_enchant",
-            "Greater Enchantment Scroll",
-            "~lg~Enchants~/~ an item, applying two random bonus.",
-            "Ещё один мощный удар Единого Круга по Коллегии зачарователей.;Yet another powerful blow delivered to the Enchanters' Collegium by the United Circle.;这是联合法会给予附魔委员会的又一大打击。;Noch ein erfolgreicher Schlag der Magiergilde gegen die Verzauberergilde.;Otro duro golpe que el Círculo Unido le asestó al Colegio de Encantadores.;Un autre coup puissant porté au Collège des Enchanteurs par le Cercle Uni.;L'ennesimo prova di superiorità inferta dalla Cerchia Unita al Collegio degli Incantatori.;Outro golpe poderoso desferido pela Guilda de Magos à Guilda de Encantadores.;Kolejny potężny cios zadany Kolegium Zaklinaczy przez Zjednoczony Krąg.;Büyücüler Loncası'ndan Efsuncular Loncası'na vurulmuş diğer bir güçlü darbe.;統一学派が附魔術学協会に強い衝撃を与えた巻物。;연합 학회가 변화 마법사 학회에게 또 한 번 강력하게 날린 일격과도 같습니다."
+        Msl.InjectTableItemLocalization(
+            oName: "rare_scroll_enchant",
+            valuesName: "Greater Enchantment Scroll",
+            valuesID: "~lg~Enchants~/~ an item, applying two random bonus.",
+            valuesDescription: "Ещё один мощный удар Единого Круга по Коллегии зачарователей.;Yet another powerful blow delivered to the Enchanters' Collegium by the United Circle.;这是联合法会给予附魔委员会的又一大打击。;Noch ein erfolgreicher Schlag der Magiergilde gegen die Verzauberergilde.;Otro duro golpe que el Círculo Unido le asestó al Colegio de Encantadores.;Un autre coup puissant porté au Collège des Enchanteurs par le Cercle Uni.;L'ennesimo prova di superiorità inferta dalla Cerchia Unita al Collegio degli Incantatori.;Outro golpe poderoso desferido pela Guilda de Magos à Guilda de Encantadores.;Kolejny potężny cios zadany Kolegium Zaklinaczy przez Zjednoczony Krąg.;Büyücüler Loncası'ndan Efsuncular Loncası'na vurulmuş diğer bir güçlü darbe.;統一学派が附魔術学協会に強い衝撃を与えた巻物。;연합 학회가 변화 마법사 학회에게 또 한 번 강력하게 날린 일격과도 같습니다."
         );
-        localizationItem.InjectTable();
 
         Msl.AddNewEvent(
             "o_inv_scroll_enchant",
