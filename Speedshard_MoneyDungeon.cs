@@ -13,7 +13,7 @@ public class SpeedshardMoneyDungeon : Mod
     public override string Author => "zizani";
     public override string Name => "Speedshard - MoneyDungeon";
     public override string Description => "More gold, more rooms, more items, and more.";
-    public override string Version => "2.0.0";
+    public override string Version => "2.0.1";
     public override string TargetVersion => "0.8.2.10";
 
     public override void PatchMod()
