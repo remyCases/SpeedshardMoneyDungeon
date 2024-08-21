@@ -1,2 +1,2 @@
-quality = (2 << 0)
+quality = 2
 event_inherited()

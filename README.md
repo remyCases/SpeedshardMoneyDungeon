@@ -61,3 +61,6 @@ Other mods I've made:
 
 - Airship Kingdom Adrift:
     - [ProductionPanel](https://github.com/remyCases/AKAMod_ProdPanel)
+
+- The Iron Oath:
+    - [AllyFreeze](https://github.com/remyCases/TheIronOath-AllyFreeze)
