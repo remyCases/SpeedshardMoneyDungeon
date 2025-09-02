@@ -12,9 +12,9 @@ public class SpeedshardMoneyDungeon : Mod
 {
     public override string Author => "zizani";
     public override string Name => "Speedshard - MoneyDungeon";
-    public override string Description => "More gold, more rooms, more items, and more.";
-    public override string Version => "2.0.1";
-    public override string TargetVersion => "0.8.2.10";
+    public override string Description => "More gold, more secrets, more items, and more.";
+    public override string Version => "2.1.0";
+    public override string TargetVersion => "0.9.3.7";
 
     public override void PatchMod()
     {
@@ -22,10 +22,6 @@ public class SpeedshardMoneyDungeon : Mod
             new UIComponent(name:"Dungeon reset days", associatedGlobal:"dungeon_reset_modifier", UIComponentType.Slider, (1, 6), 6, true),
             new UIComponent(name:"Chance of secret room (%)", associatedGlobal:"secret_room_chance", UIComponentType.Slider, (0, 100), 5, true),
             new UIComponent(name:"Money contract multiplier", associatedGlobal:"contract_money_modifier", UIComponentType.Slider, (1, 10), 1),
-            new UIComponent(name:"Max number of room", associatedGlobal:"number_room_max", UIComponentType.Slider, (5, 30), 15, true),
-            new UIComponent(name:"Min number of room", associatedGlobal:"number_room_min", UIComponentType.Slider, (1, 15), 5, true),
-            new UIComponent(name:"Max number of chest", associatedGlobal:"number_chest_max", UIComponentType.Slider, (1, 15), 7, true),
-            new UIComponent(name:"Min number of chest", associatedGlobal:"number_chest_min", UIComponentType.Slider, (1, 15), 5, true),
             new UIComponent(name:"Merchant gold multiplier", associatedGlobal:"gold_multiplier", UIComponentType.Slider, (1, 10), 1)
         );
 
@@ -39,59 +35,31 @@ public class SpeedshardMoneyDungeon : Mod
     static private void ResetTime()
     {
         Msl.LoadGML("gml_GlobalScript_scr_dungeon_reset_time")
-            .MatchFrom("scr_globaltile_dungeon_set")
-            .ReplaceBy("scr_globaltile_dungeon_set(\"dungeon_reset\", (global.dungeon_reset_modifier * (1 + (_wilderness / 100))), argument0, argument1)")
+            .MatchFrom("var resetTime =")
+            .InsertBelow("var resetTime = global.dungeon_reset_modifier * resetTime")
             .Save();
-    }
-    static private IEnumerable<string> DungeonIterator(IEnumerable<string> enumerable)
-    {
-        foreach (string element in enumerable)
-        {
-            if (element.Contains("ROOMSECRET"))
-            {
-                yield return "ROOMSECRET = scr_chance_value(global.secret_room_chance)";
-            }
-            else if (element.Contains("ROOMNUMBER"))
-            {
-                yield return "ROOMNUMBER = irandom_range(global.number_room_min, global.number_room_max)";
-            }
-            else if (element.Contains("MAXCHEST"))
-            {
-                yield return "MAXCHEST = irandom_range(global.number_chest_min, global.number_chest_max)";
-            } 
-            else
-            {
-                yield return element;
-            }
-        }
     }
     static private void DungeonController()
     {
-        Msl.LoadGML("gml_Object_o_dungeon_controller_Create_0")
-            .Apply(DungeonIterator)
-            .Save();
-
-        Msl.LoadGML("gml_Object_o_dungeon_controller_Alarm_1")
-            .MatchFrom("var _endKnot = 0")
-            .InsertBelow("var _isSecret = 0")
-            .MatchFrom("var _isSecret = (isHasSecret && (_roomCount == (ROOMNUMBER - ROOMSECRET)))")
-            .ReplaceBy("_isSecret = (isHasSecret && (_roomCount == (ROOMNUMBER - ROOMSECRET)))")
+        Msl.LoadAssemblyAsString("gml_GlobalScript_scr_dungeonHasSecretRoom")
+            .MatchFromUntil("push.v arg.argument0", "ret.v")
+            .ReplaceBy("")
+            .MatchFrom("pushi.e 5\nconv.i.v")
+            .ReplaceBy("pushglb.v global.secret_room_chance\nconv.v.v")
             .Save();
     }
-    private void MoreMoneyContract()
+    private static void MoreMoneyContract()
     {
         Msl.LoadGML("gml_GlobalScript_scr_contract_finish")
-            .MatchFrom("var prepaid\nvar money")
-            .ReplaceBy(ModFiles, "money_contract1.gml")
-            .MatchFromUntil("with (scr_guiCreateContainer", "}")
-            .ReplaceBy(ModFiles, "money_contract2.gml")
+            .MatchFrom("_money *= ((100 + _reward_mod) / 100)")
+            .InsertBelow("_money *= global.contract_money_modifier")
             .Save();
     }
     private IEnumerable<string> ChestRemoteIterator(IEnumerable<string> enumerable)
     {
         string text = @ModFiles.GetCode("chest_remote.gml");
         string textModif = "";
-        string patternTable = @"\w+\(choose\(([0-9\s,]+)\)";
+        string patternTable = @"\w+\(choose\(([\w\s,]+)\)";
         bool matchFound = false;
         bool tableFound = false;
         bool lootFound = false;
@@ -113,7 +81,7 @@ public class SpeedshardMoneyDungeon : Mod
                 }
                 else
                 {
-                    throw new InvalidOperationException("Cannot find pattern table. Cannot patch it.");
+                    throw new InvalidOperationException(string.Format("Cannot find pattern table in {{{0}}}. Cannot patch it.", element));
                 }
             }
             else if (matchFound && tableFound && !lootFound && element.Contains("with"))
@@ -146,11 +114,11 @@ public class SpeedshardMoneyDungeon : Mod
             .Apply(x => ChestRemoteIterator(x))
             .Save();
     }
-    private void MoreGold()
+    private static void MoreGold()
     {
-        Msl.LoadGML("gml_Object_o_village_standing_Alarm_1")
-            .MatchFrom("event")
-            .InsertBelow(ModFiles, "more_gold.gml")
+        Msl.LoadGML("gml_GlobalScript_scr_trade_parametrs_update")
+            .MatchFrom("Gold_Amount =")
+            .InsertBelow("Gold_Amount *= global.gold_multiplier")
             .Save();
     }
     private void RareEnchant()

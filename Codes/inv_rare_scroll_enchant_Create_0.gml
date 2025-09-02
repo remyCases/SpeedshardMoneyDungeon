@@ -1,4 +1,4 @@
 event_inherited()
-skill = 4145
+skill = o_skill_enchantment
 scr_consum_atr()
 base_index = 3
