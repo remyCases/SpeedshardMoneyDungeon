@@ -121,6 +121,47 @@ public class SpeedshardMoneyDungeon : Mod
             .InsertBelow("Gold_Amount *= global.gold_multiplier")
             .Save();
     }
+    private IEnumerable<string> TableSkillsIterator(IEnumerable<string> instructions)
+    {
+        string patternIndexstring = "(.+)(?=@\\d+)";
+        string patternArg = "(?<=argc=)(\\d+)";
+        bool flag_insertion = false;
+        foreach (string instruction in instructions)
+        {
+            if (!flag_insertion && instruction.Contains("push.s \"scroll_enchant"))
+            {
+                yield return instruction;
+                yield return "conv.s.v";
+                System.Text.RegularExpressions.Match m = Regex.Match(instruction, patternIndexstring);
+                if (m.Success)
+                {
+                    yield return m.Value.Replace("scroll_enchant", "rare_scroll_enchant");
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Cannot find the index string pattern in {instruction}");
+                }
+                flag_insertion = true;
+            }
+            else if (flag_insertion && instruction.Contains("call.i @@NewGMLArray@@"))
+            {
+                System.Text.RegularExpressions.Match m = Regex.Match(instruction, patternArg);
+                if (m.Success)
+                {
+                    int new_arg = int.Parse(m.Value) + 1;
+                    yield return Regex.Replace(instruction, patternArg, $"{new_arg}");
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Cannot find the call new_array pattern in {instruction}");
+                }
+            }
+            else
+            {
+                yield return instruction;
+            }
+        }
+    }
     private void RareEnchant()
     {
         Msl.InjectTableItemLocalization(
@@ -130,6 +171,10 @@ public class SpeedshardMoneyDungeon : Mod
             valuesDescription: "Ещё один мощный удар Единого Круга по Коллегии зачарователей.;Yet another powerful blow delivered to the Enchanters' Collegium by the United Circle.;这是联合法会给予附魔委员会的又一大打击。;Noch ein erfolgreicher Schlag der Magiergilde gegen die Verzauberergilde.;Otro duro golpe que el Círculo Unido le asestó al Colegio de Encantadores.;Un autre coup puissant porté au Collège des Enchanteurs par le Cercle Uni.;L'ennesimo prova di superiorità inferta dalla Cerchia Unita al Collegio degli Incantatori.;Outro golpe poderoso desferido pela Guilda de Magos à Guilda de Encantadores.;Kolejny potężny cios zadany Kolegium Zaklinaczy przez Zjednoczony Krąg.;Büyücüler Loncası'ndan Efsuncular Loncası'na vurulmuş diğer bir güçlü darbe.;統一学派が附魔術学協会に強い衝撃を与えた巻物。;연합 학회가 변화 마법사 학회에게 또 한 번 강력하게 날린 일격과도 같습니다."
         );
 
+        Msl.LoadAssemblyAsString("gml_GlobalScript_table_items_stats")
+            .Apply(TableSkillsIterator)
+            .Save();
+
         Msl.AddNewEvent(
             "o_inv_scroll_enchant",
             ModFiles.GetCode("inv_scroll_enchant_Other_24.gml"),
@@ -138,16 +183,17 @@ public class SpeedshardMoneyDungeon : Mod
         );
 
         UndertaleGameObject invRareScroll = Msl.AddObject(
-            name: "o_inv_rare_scroll_enchant", 
-            spriteName: "s_inv_scroll", 
-            parentName: "o_inv_scroll_parent", 
-            isVisible: true, 
-            isPersistent: true, 
+            name: "o_inv_rare_scroll_enchant",
+            spriteName: "s_inv_scroll",
+            parentName: "o_inv_scroll_parent",
+            isVisible: true,
+            isPersistent: true,
             isAwake: true
         );
-        invRareScroll.ApplyEvent(ModFiles, 
+        invRareScroll.ApplyEvent(ModFiles,
                 new MslEvent("inv_rare_scroll_enchant_Create_0.gml", EventType.Create, 0),
-                new MslEvent("inv_rare_scroll_enchant_Other_24.gml", EventType.Other, 24)
+                new MslEvent("inv_rare_scroll_enchant_Other_24.gml", EventType.Other, 24),
+                new MslEvent("inv_rare_scroll_enchant_Draw_73.gml", EventType.Draw, 73)
         );
 
         Msl.AddNewEvent(
@@ -163,7 +209,7 @@ public class SpeedshardMoneyDungeon : Mod
             .Save();
 
         UndertaleGameObject lootRareScroll = Msl.AddObject(
-            name: "o_loot_rare_scroll_enchant", 
+            name: "o_loot_rare_scroll_enchant",
             spriteName: "s_loot_scroll",
             parentName: "o_loot_scroll_parent",
             isVisible: true,
@@ -171,7 +217,7 @@ public class SpeedshardMoneyDungeon : Mod
             isAwake: true,
             collisionShapeFlags: CollisionShapeFlags.Box
         );
-        lootRareScroll.ApplyEvent(ModFiles, 
+        lootRareScroll.ApplyEvent(ModFiles,
             new MslEvent("loot_rare_scroll_enchant_Create_0.gml", EventType.Create, 0)
         );
 
