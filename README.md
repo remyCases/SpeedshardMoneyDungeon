@@ -3,13 +3,14 @@
 ## Description
 
 This mod encapsulate the functionalities around money gains and dungeon generation:
+
 - Contract reset and money are customizable
-- Room number, chest number and secret room chance are customizable for dungeon generation
+- Secret room chance are customizable for dungeon generation
 - Rare echant scrolls can now be found in distant dungeon boss chest
 - Gold multiplier for every npc
-- Fix the vanilla bug which prevent distant dungeons chests to generate a special reward 
+- Fix the vanilla bug which prevent distant dungeons chests to generate a special reward
 
-Other functionalities can be found in [Speedshard_Core](https://github.com/remyCases/SpeedshardCore), [Speedshard_Sprint](https://github.com/remyCases/SpeedshardSprint), [Speedshard_Skinning](https://github.com/remyCases/SpeedshardSkinning) and [Speedshard_Stances](https://github.com/remyCases/SpeedshardStances).
+Other functionalities can be found in [Speedshard_Core](https://github.com/remyCases/SpeedshardCore), [Speedshard_Sprint](https://github.com/remyCases/SpeedshardSprint) and [Speedshard_Stances](https://github.com/remyCases/SpeedshardStances).
 
 ## Installation
 
@@ -41,26 +42,27 @@ You can now play the game with the modded version !
 
 ## Troubleshooting
 
-If you encountered some troubles while trying to patch your game, you can contact me on [Discord](https://discord.com/users/200330865522376704), and send me the latest log file found in `MSL/logs`.
+If you encountered some troubles while trying to patch your game, you can contact me on [Discord](https://discord.com/users/1291700720218931213), and send me the latest log file found in `MSL/logs`.
 
 ## See also
 
 Other mods I've made:
+
 - Stoneshard:
-    - [Character Creation](https://github.com/remyCases/CharacterCreator)
-    - [Pelt Durability](https://github.com/remyCases/Stoneshard-PeltDurability)
-    - [MoreSaveSlots](https://github.com/remyCases/Stoneshard-MoreSaveSlots)
-    - [Defeat Scenarios](https://github.com/remyCases/Stoneshard-DefeatScenarios)
-    - [Guaranteed Uniques](https://github.com/remyCases/GuaranteedUniques)
+  - [Character Creation](https://github.com/remyCases/CharacterCreator)
+  - [Pelt Durability](https://github.com/remyCases/Stoneshard-PeltDurability)
+  - [MoreSaveSlots](https://github.com/remyCases/Stoneshard-MoreSaveSlots)
+  - [Defeat Scenarios](https://github.com/remyCases/Stoneshard-DefeatScenarios)
+  - [Guaranteed Uniques](https://github.com/remyCases/GuaranteedUniques)
 
 - Shardpunk:
-    - [Shardpunk-BiggerTeam](https://github.com/remyCases/Shardpunk-BiggerTeam)
-    - [Shardpunk-Faster](https://github.com/remyCases/Shardpunk-Faster)
-    - [Shardpunk-MoreSkillLevels](https://github.com/remyCases/Shardpunk-MoreSkillLevels)
-    - [Shardpunk-RandomParty](https://github.com/remyCases/Shardpunk-RandomParty)
+  - [Shardpunk-BiggerTeam](https://github.com/remyCases/Shardpunk-BiggerTeam)
+  - [Shardpunk-Faster](https://github.com/remyCases/Shardpunk-Faster)
+  - [Shardpunk-MoreSkillLevels](https://github.com/remyCases/Shardpunk-MoreSkillLevels)
+  - [Shardpunk-RandomParty](https://github.com/remyCases/Shardpunk-RandomParty)
 
 - Airship Kingdom Adrift:
-    - [ProductionPanel](https://github.com/remyCases/AKAMod_ProdPanel)
+  - [ProductionPanel](https://github.com/remyCases/AKAMod_ProdPanel)
 
 - The Iron Oath:
-    - [AllyFreeze](https://github.com/remyCases/TheIronOath-AllyFreeze)
+  - [AllyFreeze](https://github.com/remyCases/TheIronOath-AllyFreeze)
